@@ -1,47 +1,92 @@
-<!-- Unit 7 Project
-Requirements
-[  ] three variables
-[  ] animation that moves position
-[  ] animation that changes size
-[  ] three new HTML elements/CSS Declarations
-
-Select ONE Additional 
-[ no ] Feature 1 - Use an Incrementing Shortcut 
-[ no ] Feature 2 - Move Object with Mouse
-[ no ] Feature 3 - Repeat Animation
-[ no ] Feature 4 - Text on the Canvas
-[ no ] Feature 5 - Animate a color change
--->
-
-
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Unit 7 Project</title>
-    <link href="style.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.6.6/processing.min.js"></script>
-    <style></style>
-  </head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fireworks Display</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
 
-  <body>
-    <h1>
-      New Year, New Me
-    </h1>
-    <div class="main">
-      <canvas id="myCanvas" data-processing-sources="myP5Code.pde"> </canvas>
-      <div>
-        <h2>
-          2025 Goals
-        </h2>
-        <ol>
-          <li>Spend More Time Coding </li>
-        </ol>
-      </div>
-    </div>
-        
-  </body>
+    h1 {
+      font-size: 2rem;
+      text-decoration: underline;
+    }
+
+    p {
+      font-size: 1.2rem;
+    }
+
+    canvas {
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Fireworks Display</h1>
+  <p>Watch the shapes grow and move like a real fireworks display!</p>
+  <canvas id="fireworksCanvas"></canvas>
+
+  <script>
+    // Get the canvas and context
+    const canvas = document.getElementById("fireworksCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // Set canvas size
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Declare variables
+    let x = canvas.width / 2;
+    let y = canvas.height / 2;
+    let size = 20;
+    let colorR = 255;
+    let colorG = 0;
+    let colorB = 0;
+    let speedX = 2;
+    let speedY = 2;
+    let sizeChange = 0.5;
+
+    // Animation loop
+    function draw() {
+      // Clear the canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw a circle using variables
+      ctx.fillStyle = `rgb(${colorR}, ${colorG}, ${colorB})`;
+      ctx.beginPath();
+      ctx.arc(x, y, size, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Update variables for movement, size, and color
+      x += speedX;
+      y += speedY;
+      size += sizeChange;
+
+      // Animate color
+      colorR = (colorR + 1) % 256;
+      colorG = (colorG + 2) % 256;
+      colorB = (colorB + 3) % 256;
+
+      // Bounce the circle off the edges
+      if (x + size > canvas.width || x - size < 0) speedX *= -1;
+      if (y + size > canvas.height || y - size < 0) speedY *= -1;
+
+      // Reverse size change if the circle grows too big or small
+      if (size > 50 || size < 10) sizeChange *= -1;
+
+      // Repeat animation
+      requestAnimationFrame(draw);
+    }
+
+    // Start the animation
+    draw();
+  </script>
+</body>
 </html>
-
-<!--- Taken From Khan Academy Intro to JS: Drawing & Animation --->
